@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -189,4 +187,376 @@
   .day-col .ex-sets { display: block; font-size: 10px; color: var(--text-hint); margin-top: 1px; }
 
   /* ── COMING SOON ── */
-  .coming-soon { background: var(--bg-card); border-radius: var(--radius-
+  .coming-soon { background: var(--bg-card); border-radius: var(--radius-lg); border: 0.5px solid var(--border); padding: 48px 20px; text-align: center; }
+  .coming-soon p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ── CHAT ── */
+  .chat-wrap { display: flex; flex-direction: column; height: calc(100vh - 148px); }
+  .chat-date-badge { text-align: center; font-size: 11px; color: var(--text-hint); margin-bottom: 10px; letter-spacing: 0.04em; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 4px 0 6px; display: flex; flex-direction: column; gap: 8px; }
+  .msg { max-width: 80%; padding: 10px 13px; font-size: 14px; line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
+  .msg-bot { background: var(--bg-bot-msg); color: var(--text-main); align-self: flex-start; border-radius: 4px var(--radius-md) var(--radius-md) var(--radius-md); border: 0.5px solid var(--border); }
+  .msg-user { background: var(--accent); color: #111; font-weight: 500; align-self: flex-end; border-radius: var(--radius-md) var(--radius-md) 4px var(--radius-md); }
+  .chat-input-row { display: flex; gap: 8px; padding-top: 10px; border-top: 0.5px solid var(--border); }
+  .chat-input-row input { flex: 1; background: var(--bg-input); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); padding: 11px 14px; font-size: 14px; color: var(--text-main); outline: none; transition: border-color 0.15s; }
+  .chat-input-row input::placeholder { color: var(--text-hint); }
+  .chat-input-row input:focus { border-color: var(--accent); }
+  .send-btn { background: var(--accent); color: #111; border: none; border-radius: var(--radius-md); padding: 0 18px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: opacity 0.15s; }
+  .send-btn:active { opacity: 0.8; }
+
+  /* ── RESULTS ── */
+  .results-days-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .result-day-label { font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+  .result-entry { background: var(--bg-card2); border-radius: var(--radius-sm); border: 0.5px solid var(--border); padding: 10px 11px; margin-bottom: 7px; }
+  .result-entry:last-child { margin-bottom: 0; }
+  .result-entry .ex-name { font-size: 12px; font-weight: 500; color: var(--text-main); margin-bottom: 3px; }
+  .result-entry .ex-detail { font-size: 11px; color: var(--text-muted); }
+
+  /* ── NAV ── */
+  nav { background: var(--bg-card); border-top: 0.5px solid var(--border-md); display: grid; grid-template-columns: 1fr 1fr 1fr; flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom,0px); min-height: 75px; }
+  nav button { background: none; border: none; padding: 14px 4px 16px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 500; color: var(--text-hint); transition: color 0.15s; line-height: 1.2; }
+  nav button svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  nav button.active { color: var(--accent); }
+  .nav-dot { display: none; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); margin: 0 auto -3px; }
+  nav button.active .nav-dot { display: block; }
+
+  .chat-messages::-webkit-scrollbar { width: 2px; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 4px; }
+  #app-screen::-webkit-scrollbar { width: 2px; }
+  #app-screen::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="splash-logo-wrap">
+    <svg width="60" height="60" viewBox="0 0 120 120" fill="none">
+      <rect x="22" y="30" width="54" height="10" rx="4" fill="#A8E63D"/>
+      <rect x="22" y="30" width="10" height="58" rx="4" fill="#A8E63D"/>
+      <rect x="22" y="54" width="38" height="10" rx="4" fill="#A8E63D"/>
+      <circle cx="88" cy="88" r="10" fill="#A8E63D"/>
+      <circle cx="88" cy="88" r="6" fill="#162008"/>
+      <circle cx="88" cy="88" r="2.5" fill="#A8E63D"/>
+    </svg>
+  </div>
+  <div class="splash-name">Fit<span>BRO</span></div>
+  <div class="splash-sub">your gym log</div>
+  <div class="splash-bar-bg"><div class="splash-bar-fill"></div></div>
+</div>
+
+<div id="app" style="display:none;">
+  <div id="app-screen">
+    <div id="screen-inner"></div>
+  </div>
+  <nav>
+    <button id="nav-program" onclick="showTab('program')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      Программа<span class="nav-dot"></span>
+    </button>
+    <button id="nav-tracker" onclick="showTab('tracker')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+      Трекер<span class="nav-dot"></span>
+    </button>
+    <button id="nav-results" onclick="showTab('results')">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Мои результаты<span class="nav-dot"></span>
+    </button>
+  </nav>
+</div>
+
+<script>
+const LOGO_SVG = `<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="22" y="30" width="54" height="10" rx="4" fill="#A8E63D"/>
+  <rect x="22" y="30" width="10" height="58" rx="4" fill="#A8E63D"/>
+  <rect x="22" y="54" width="38" height="10" rx="4" fill="#A8E63D"/>
+  <circle cx="88" cy="88" r="10" fill="#A8E63D"/>
+  <circle cx="88" cy="88" r="6" fill="#162008"/>
+  <circle cx="88" cy="88" r="2.5" fill="#A8E63D"/>
+</svg>`;
+
+const WATERMARK = `<div class="watermark"><svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="22" y="30" width="54" height="10" rx="4" fill="#A8E63D"/>
+  <rect x="22" y="30" width="10" height="58" rx="4" fill="#A8E63D"/>
+  <rect x="22" y="54" width="38" height="10" rx="4" fill="#A8E63D"/>
+  <circle cx="88" cy="88" r="10" fill="#A8E63D"/>
+  <circle cx="88" cy="88" r="6" fill="#141414"/>
+  <circle cx="88" cy="88" r="2.5" fill="#A8E63D"/>
+</svg></div>`;
+
+const PROGRAM_FULLBODY = {
+  day1: [
+    { name: 'Приседания со штангой', sets: '2×10' },
+    { name: 'Жим штанги лёжа',       sets: '2×10' },
+    { name: 'Румынская тяга',         sets: '2×10' },
+    { name: 'Тяга верт. блока',       sets: '3×12' },
+    { name: 'Жим гантелей на плечи',  sets: '2×10' },
+    { name: 'Разгибание ног',         sets: '2×12' },
+    { name: 'Сведения рук (бабочка)', sets: '2×12' },
+    { name: 'Сгибание на бицепс',     sets: '2×10' },
+    { name: 'Французский жим',        sets: '2×10' },
+    { name: 'Пресс',                  sets: '—' },
+  ],
+  day2: [
+    { name: 'Болгарские приседания',  sets: '2×10' },
+    { name: 'Жим ногами / Гакк',      sets: '2×10' },
+    { name: 'Жим гантелей наклон',    sets: '3×10' },
+    { name: 'Тяга в наклоне',         sets: '2×10' },
+    { name: 'Тяга гориз. блока',      sets: '3×10' },
+    { name: 'Разводка (средн. дельта)', sets: '2×10' },
+    { name: 'Разведения задн. дельта', sets: '2×10' },
+    { name: 'Обратные сгибания',      sets: '—' },
+    { name: 'Разгибания трицепс',     sets: '—' },
+    { name: 'Подъёмы на икры',        sets: '—' },
+    { name: 'Пресс',                  sets: '—' },
+  ]
+};
+
+let currentTab = 'home';
+let selectedProgram = null;
+let chatState = 'ask_exercise';
+let currentExercise = '';
+let pendingWeight = '';
+let chatLog = [];
+
+function getTodayStr() {
+  return new Date().toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
+function saveEntry(exercise, weight, sets, reps) {
+  const log = JSON.parse(localStorage.getItem('workout_log') || '[]');
+  log.push({ date: getTodayStr(), exercise, weight, sets, reps, ts: Date.now() });
+  localStorage.setItem('workout_log', JSON.stringify(log));
+}
+function getLog() { return JSON.parse(localStorage.getItem('workout_log') || '[]'); }
+function getLastTwoDays() {
+  const log = getLog();
+  if (!log.length) return [];
+  const dates = [...new Set(log.map(e => e.date))].sort((a,b) => {
+    return b.split('.').reverse().join('-').localeCompare(a.split('.').reverse().join('-'));
+  });
+  return dates.slice(0,2);
+}
+
+const appScreen = document.getElementById('app-screen');
+const screenInner = document.getElementById('screen-inner');
+
+function showTab(tab) {
+  currentTab = tab;
+  ['program','tracker','results'].forEach(t =>
+    document.getElementById('nav-'+t).classList.toggle('active', t===tab)
+  );
+  render();
+}
+
+function render() {
+  if (currentTab==='home') renderHome();
+  else if (currentTab==='program') renderProgram();
+  else if (currentTab==='tracker') renderTracker();
+  else if (currentTab==='results') renderResults();
+}
+
+function renderHome() {
+  appScreen.style.overflow = 'hidden';
+  appScreen.style.padding = '0';
+  screenInner.innerHTML = `
+    <div class="home-screen" style="height: 100%; padding: 20px 16px 16px;">
+      <div class="home-top">
+        <div class="home-logo-wrap">${LOGO_SVG.replace('width="60" height="60"','width="64" height="64"')}</div>
+        <div class="home-brand">Fit<span>BRO</span></div>
+        <div class="home-brand-sub">your gym log</div>
+      </div>
+      <div class="home-bottom" style="margin-top: auto; padding-bottom: 10px;">
+        <div class="home-welcome-text">
+          <h2>Добро пожаловать!</h2>
+          <p>Выберите раздел ниже,<br>чтобы начать тренировку</p>
+        </div>
+        <div class="bounce-arrow">
+          <svg viewBox="0 0 18 18"><polyline points="4 7 9 12 14 7"/></svg>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderProgram() {
+  appScreen.style.overflow = 'auto';
+  appScreen.style.padding = '16px';
+  const makeList = arr => arr.map(e =>
+    `<li>${escHtml(e.name)}<span class="ex-sets">${e.sets}</span></li>`
+  ).join('');
+
+  let html = `${WATERMARK}<div class="screen-content">
+    <div class="panel">
+      <div class="panel-header">Программа тренировок</div>
+      <div class="panel-body">
+        <div class="prog-buttons">
+          <div class="prog-btn ${selectedProgram==='fullbody'?'active':''}" onclick="selectProgram('fullbody')">
+            Фулл-боди<span>2 дня в неделю</span>
+          </div>
+          <div class="prog-btn ${selectedProgram==='split'?'active':''}" onclick="selectProgram('split')">
+            Сплит<span>3 дня в неделю</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  if (selectedProgram === 'fullbody') {
+    html += `<div class="panel">
+      <div class="panel-header">Фулл-боди — расписание</div>
+      <div class="panel-body" style="padding-top:8px">
+        <div class="days-grid">
+          <div class="day-col"><h3>День 1</h3><ul>${makeList(PROGRAM_FULLBODY.day1)}</ul></div>
+          <div class="day-col"><h3>День 2</h3><ul>${makeList(PROGRAM_FULLBODY.day2)}</ul></div>
+        </div>
+      </div>
+    </div>`;
+  }
+  if (selectedProgram === 'split') {
+    html += `<div class="coming-soon"><p>Здесь пока ничего нет.<br>Возможно, добавлю позже.</p></div>`;
+  }
+
+  html += `</div>`;
+  screenInner.innerHTML = html;
+}
+
+function selectProgram(p) { selectedProgram = p; renderProgram(); }
+
+function renderTracker() {
+  appScreen.style.overflow = 'hidden';
+  appScreen.style.padding = '12px 14px';
+  const msgs = chatLog.map(m =>
+    `<div class="msg msg-${m.from}">${escHtml(m.text)}</div>`
+  ).join('');
+
+  screenInner.innerHTML = `
+    <div class="panel" style="display:flex;flex-direction:column;height:calc(100vh - 148px);">
+      <div class="panel-header">Трекер тренировки</div>
+      <div style="flex:1;display:flex;flex-direction:column;padding:12px 14px;overflow:hidden;">
+        <div class="chat-date-badge">${getTodayStr()}</div>
+        <div class="chat-messages" id="chat-messages">${msgs}</div>
+        <div class="chat-input-row">
+          <input id="chat-input" type="text" placeholder="Введите сообщение…" onkeydown="if(event.key==='Enter')sendChat()">
+          <button class="send-btn" onclick="sendChat()">Отправить</button>
+        </div>
+      </div>
+    </div>`;
+
+  scrollChat();
+  if (chatLog.length === 0) addBotMessage('Привет! 💪\nВведите название упражнения, которое вы выполняете сегодня.');
+}
+
+function scrollChat() {
+  const el = document.getElementById('chat-messages');
+  if (el) el.scrollTop = el.scrollHeight;
+}
+function addBotMessage(text) {
+  chatLog.push({ from:'bot', text });
+  const el = document.getElementById('chat-messages');
+  if (el) {
+    const div = document.createElement('div');
+    div.className = 'msg msg-bot';
+    div.textContent = text;
+    el.appendChild(div);
+    scrollChat();
+  }
+}
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  const val = input.value.trim();
+  if (!val) return;
+  input.value = '';
+  chatLog.push({ from:'user', text:val });
+  const el = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg msg-user';
+  div.textContent = val;
+  el.appendChild(div);
+  scrollChat();
+  setTimeout(() => handleBot(val), 300);
+}
+function handleBot(input) {
+  if (chatState === 'ask_exercise') {
+    currentExercise = input;
+    chatState = 'ask_weight';
+    addBotMessage(`Упражнение: ${currentExercise}\n\nВведите рабочий вес (кг):`);
+  } else if (chatState === 'ask_weight') {
+    pendingWeight = input;
+    chatState = 'ask_sets';
+    addBotMessage('Введите подходы × повторения\n(например: 3×10):');
+  } else if (chatState === 'ask_sets') {
+    let sets = '?', reps = '?';
+    const m = input.match(/(\d+)\s*[×xXхХ*]\s*(\d+)/i);
+    
+    if (m) { 
+      sets = m[1]; 
+      reps = m[2]; 
+    } else {
+      const nums = input.match(/\d+/g);
+      if (nums && nums.length >= 2) { 
+        sets = nums[0]; 
+        reps = nums[1]; 
+      } else if (nums && nums.length === 1) { 
+        sets = '1'; 
+        reps = nums[0]; 
+      }
+    }
+    
+    saveEntry(currentExercise, pendingWeight, sets, reps);
+    addBotMessage(`✓ Записано!\n${getTodayStr()} — ${currentExercise}: ${pendingWeight}кг × ${reps} повт. × ${sets} подх.\n\nВведите следующее упражнение или напишите «готово».`);
+    
+    chatState = 'ask_exercise';
+    currentExercise = '';
+    pendingWeight = '';
+  }
+}
+
+function renderResults() {
+  appScreen.style.overflow = 'auto';
+  appScreen.style.padding = '16px';
+  const days = getLastTwoDays();
+  if (!days.length) {
+    screenInner.innerHTML = `${WATERMARK}<div class="screen-content"><div class="coming-soon"><p>Записей пока нет.<br>Начните тренировку в разделе «Трекер».</p></div></div>`;
+    return;
+  }
+  const log = getLog();
+  const cols = days.map(date => {
+    const entries = log.filter(e => e.date === date);
+    const rows = entries.map(e => `
+      <div class="result-entry">
+        <div class="ex-name">${escHtml(e.exercise)}</div>
+        <div class="ex-detail">${escHtml(e.weight)} кг × ${escHtml(e.reps)} повт. × ${escHtml(e.sets)} подх.</div>
+      </div>`).join('');
+    return `<div><div class="result-day-label">${date}</div>${rows}</div>`;
+  }).join('');
+
+  screenInner.innerHTML = `${WATERMARK}<div class="screen-content">
+    <div class="panel">
+      <div class="panel-header">Последние тренировки</div>
+      <div class="panel-body">
+        <div class="results-days-grid">${cols}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded', () => {
+  if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+  }
+
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+    const app = document.getElementById('app');
+    splash.classList.add('hide');
+    app.style.display = 'flex';
+    renderHome();
+    setTimeout(() => { splash.style.display = 'none'; }, 500);
+  }, 1600);
+});
+</script>
+</body>
+</html>
