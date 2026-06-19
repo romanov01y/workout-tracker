@@ -122,8 +122,37 @@
   .panel-header { padding: 15px 18px 13px; font-size: 15px; font-weight: 600; color: var(--text-main); letter-spacing: -0.2px; border-bottom: 0.5px solid var(--border); }
   .panel-body { padding: 14px 16px; }
 
-  /* ── PROGRAM top offset ── */
-  .prog-section { padding-top: 28px; } /* смещение вниз */
+  /* ── PROGRAM: начальный экран по центру ── */
+  .prog-section-top { padding-top: 28px; } /* после выбора — сверху */
+  .prog-center-wrap {
+    height: calc(100vh - var(--nav-h));
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 0 24px;
+    gap: 16px;
+  }
+  .prog-center-label {
+    font-size: 15px; font-weight: 600;
+    color: rgba(168,230,61,0.5);
+    text-align: center; letter-spacing: -0.1px;
+    margin-bottom: 4px;
+  }
+  .prog-buttons-center { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+  .prog-btn-center {
+    background: rgba(168,230,61,0.08);
+    border: 1px solid rgba(168,230,61,0.25);
+    border-radius: var(--radius-md);
+    padding: 22px 10px;
+    text-align: center; cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    font-size: 14px; font-weight: 600;
+    color: rgba(168,230,61,0.5);
+  }
+  .prog-btn-center span { display:block; font-size:11px; font-weight:400; color:rgba(168,230,61,0.35); margin-top:5px; }
+  .prog-btn-center:active { opacity: 0.7; }
+
+  /* ── RESULTS top offset ── */
+  .results-section { padding-top: 20vh; }
 
   /* ── PROG BUTTONS ── */
   .prog-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -322,9 +351,25 @@ function renderHome(){
 }
 
 function renderProgram(){
-  as.style.overflow='auto';
   const makeList=arr=>arr.map(e=>`<li>${escHtml(e.name)}<span class="ex-sets">${e.sets}</span></li>`).join('');
-  let html=`${WATERMARK}<div class="screen-content prog-section">
+
+  if(!selectedProgram){
+    // Центрированный выбор без прокрутки
+    as.style.overflow='hidden';
+    si.innerHTML=`${WATERMARK}
+      <div class="prog-center-wrap">
+        <div class="prog-center-label">Выберите программу тренировок</div>
+        <div class="prog-buttons-center">
+          <div class="prog-btn-center" onclick="selectProgram('fullbody')">Фулл-боди<span>2 дня в неделю</span></div>
+          <div class="prog-btn-center" onclick="selectProgram('split')">Сплит<span>3 дня в неделю</span></div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  // После выбора — панель наверху, контент ниже
+  as.style.overflow='auto';
+  let html=`${WATERMARK}<div class="screen-content prog-section-top">
     <div class="panel">
       <div class="panel-header">Программа тренировок</div>
       <div class="panel-body">
@@ -391,14 +436,14 @@ function handleBot(input){
 function renderResults(){
   as.style.overflow='auto';
   const days=getLastTwoDays();
-  if(!days.length){si.innerHTML=`${WATERMARK}<div class="screen-content"><div class="coming-soon"><p>Записей пока нет.<br>Начните тренировку в разделе «Трекер».</p></div></div>`;return;}
+  if(!days.length){si.innerHTML=`${WATERMARK}<div class="screen-content results-section"><div class="coming-soon"><p>Записей пока нет.<br>Начните тренировку в разделе «Трекер».</p></div></div>`;return;}
   const log=getLog();
   const cols=days.map(date=>{
     const entries=log.filter(e=>e.date===date);
     const rows=entries.map(e=>`<div class="result-entry"><div class="ex-name">${escHtml(e.exercise)}</div><div class="ex-detail">${escHtml(e.weight)} кг × ${escHtml(e.reps)} × ${escHtml(e.sets)} подх.</div></div>`).join('');
     return `<div><div class="result-day-label">${date}</div>${rows}</div>`;
   }).join('');
-  si.innerHTML=`${WATERMARK}<div class="screen-content"><div class="panel"><div class="panel-header">Последние тренировки</div><div class="panel-body"><div class="results-days-grid">${cols}</div></div></div></div>`;
+  si.innerHTML=`${WATERMARK}<div class="screen-content results-section"><div class="panel"><div class="panel-header">Последние тренировки</div><div class="panel-body"><div class="results-days-grid">${cols}</div></div></div></div>`;
 }
 
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
