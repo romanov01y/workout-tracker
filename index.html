@@ -20,165 +20,96 @@
     --border-md:  rgba(255,255,255,0.12);
     --accent:     #A8E63D;
     --accent-dim: rgba(168,230,61,0.10);
+    --red:        #FF5252;
+    --red-dim:    rgba(255,82,82,0.12);
     --radius-sm:  8px;
     --radius-md:  12px;
     --radius-lg:  18px;
     --font: -apple-system,'Segoe UI',sans-serif;
-    --nav-h: 72px; /* +10% от 65px */
+    --nav-h: 72px;
   }
-
-  body {
-    background: var(--bg-page);
-    font-family: var(--font);
-    color: var(--text-main);
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+  body { background:var(--bg-page); font-family:var(--font); color:var(--text-main); height:100vh; display:flex; flex-direction:column; overflow:hidden; }
 
   /* ── SPLASH ── */
-  #splash {
-    position: fixed; inset: 0;
-    background: #141414;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    z-index: 999;
-    transition: opacity 0.5s ease;
-  }
-  #splash.hide { opacity: 0; pointer-events: none; }
-  .splash-logo-wrap {
-    width: 96px; height: 96px; border-radius: 26px;
-    background: #162008;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 20px;
-  }
-  .splash-name { font-size: 32px; font-weight: 800; color: #F0F0F0; letter-spacing: -0.5px; margin-bottom: 6px; }
-  .splash-name span { color: #A8E63D; }
-  .splash-sub { font-size: 12px; font-weight: 500; color: #444; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 48px; }
-  .splash-bar-bg { width: 140px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
-  .splash-bar-fill { height: 100%; width: 0%; background: #A8E63D; border-radius: 2px; animation: loadbar 1.4s ease forwards; }
-  @keyframes loadbar { to { width: 100%; } }
+  #splash { position:fixed; inset:0; background:#141414; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:999; transition:opacity 0.5s ease; }
+  #splash.hide { opacity:0; pointer-events:none; }
+  .splash-logo-wrap { width:96px; height:96px; border-radius:26px; background:#162008; display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
+  .splash-name { font-size:32px; font-weight:800; color:#F0F0F0; letter-spacing:-0.5px; margin-bottom:6px; }
+  .splash-name span { color:#A8E63D; }
+  .splash-sub { font-size:12px; font-weight:500; color:#444; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:48px; }
+  .splash-bar-bg { width:140px; height:3px; background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden; }
+  .splash-bar-fill { height:100%; width:0%; background:#A8E63D; border-radius:2px; animation:loadbar 1.4s ease forwards; }
+  @keyframes loadbar { to { width:100%; } }
 
   /* ── APP ── */
-  #app { flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-
-  /* ── SCREEN ── */
-  #app-screen { flex: 1; overflow-y: auto; position: relative; }
-  #app-screen::-webkit-scrollbar { width: 2px; }
-  #app-screen::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 4px; }
+  #app { flex:1; display:flex; flex-direction:column; height:100vh; overflow:hidden; }
+  #app-screen { flex:1; overflow-y:auto; position:relative; }
+  #app-screen::-webkit-scrollbar { width:2px; }
+  #app-screen::-webkit-scrollbar-thumb { background:var(--border-md); border-radius:4px; }
 
   /* ── WATERMARK ── */
-  .watermark {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.04; pointer-events: none; z-index: 0;
-  }
-  .watermark svg { width: 220px; height: 220px; }
-  .screen-content { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 14px; padding: 16px; }
+  .watermark { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); opacity:0.04; pointer-events:none; z-index:0; }
+  .watermark svg { width:220px; height:220px; }
+  .screen-content { position:relative; z-index:1; display:flex; flex-direction:column; gap:14px; padding:16px; }
 
   /* ── HOME ── */
-  .home-wrap {
-    height: calc(100vh - var(--nav-h));
-    display: flex; flex-direction: column;
-    padding: 0 20px;
-  }
-  /* Логотип — точная середина */
-  .home-logo-zone {
-    flex: 1;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-  }
-  .home-logo-box {
-    width: 108px; height: 108px; border-radius: 28px;
-    background: #162008;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 22px;
-  }
-  .home-brand { font-size: 38px; font-weight: 800; color: #F0F0F0; letter-spacing: -0.5px; margin-bottom: 5px; line-height: 1; }
-  .home-brand span { color: #A8E63D; }
-  .home-brand-sub { font-size: 11px; font-weight: 500; color: #444; letter-spacing: 0.15em; text-transform: uppercase; }
-
-  /* Текст + стрелка — прижаты к навигации */
-  .home-bottom {
-    padding-bottom: 18px;
-    display: flex; flex-direction: column;
-    align-items: center; gap: 12px;
-  }
-  .home-welcome-text { text-align: center; }
-  .home-welcome-text h2 { font-size: 17px; font-weight: 600; color: var(--text-main); margin-bottom: 5px; letter-spacing: -0.2px; }
-  .home-welcome-text p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
-  .bounce-arrow {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 32px; height: 32px; border-radius: 50%;
-    background: var(--accent-dim);
-    animation: bounce 1.5s ease-in-out infinite;
-  }
-  .bounce-arrow svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2.4; stroke-linecap: round; }
+  .home-wrap { height:calc(100vh - var(--nav-h)); display:flex; flex-direction:column; padding:0 20px; }
+  .home-logo-zone { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .home-logo-box { width:108px; height:108px; border-radius:28px; background:#162008; display:flex; align-items:center; justify-content:center; margin-bottom:22px; }
+  .home-brand { font-size:38px; font-weight:800; color:#F0F0F0; letter-spacing:-0.5px; margin-bottom:5px; line-height:1; }
+  .home-brand span { color:#A8E63D; }
+  .home-brand-sub { font-size:11px; font-weight:500; color:#444; letter-spacing:0.15em; text-transform:uppercase; }
+  .home-bottom { padding-bottom:18px; display:flex; flex-direction:column; align-items:center; gap:12px; }
+  .home-welcome-text { text-align:center; }
+  .home-welcome-text h2 { font-size:17px; font-weight:600; color:var(--text-main); margin-bottom:5px; letter-spacing:-0.2px; }
+  .home-welcome-text p { font-size:13px; color:var(--text-muted); line-height:1.5; }
+  .bounce-arrow { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:var(--accent-dim); animation:bounce 1.5s ease-in-out infinite; }
+  .bounce-arrow svg { width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2.4; stroke-linecap:round; }
   @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
 
   /* ── PANEL ── */
-  .panel { background: var(--bg-card); border-radius: var(--radius-lg); border: 0.5px solid var(--border); overflow: hidden; }
-  .panel-header { padding: 15px 18px 13px; font-size: 15px; font-weight: 600; color: var(--text-main); letter-spacing: -0.2px; border-bottom: 0.5px solid var(--border); }
-  .panel-body { padding: 14px 16px; }
+  .panel { background:var(--bg-card); border-radius:var(--radius-lg); border:0.5px solid var(--border); overflow:hidden; }
+  .panel-header { padding:15px 18px 13px; font-size:15px; font-weight:600; color:var(--text-main); letter-spacing:-0.2px; border-bottom:0.5px solid var(--border); }
+  .panel-body { padding:14px 16px; }
 
-  /* ── PROGRAM: начальный экран по центру ── */
-  .prog-section-top { padding-top: 28px; } /* после выбора — сверху */
-  .prog-center-wrap {
-    height: calc(100vh - var(--nav-h));
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 0 24px;
-    gap: 16px;
-  }
-  .prog-center-label {
-    font-size: 15px; font-weight: 600;
-    color: rgba(168,230,61,0.5);
-    text-align: center; letter-spacing: -0.1px;
-    margin-bottom: 4px;
-  }
-  .prog-buttons-center { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
-  .prog-btn-center {
-    background: rgba(168,230,61,0.08);
-    border: 1px solid rgba(168,230,61,0.25);
-    border-radius: var(--radius-md);
-    padding: 22px 10px;
-    text-align: center; cursor: pointer;
-    transition: background 0.15s, border-color 0.15s;
-    font-size: 14px; font-weight: 600;
-    color: rgba(168,230,61,0.5);
-  }
+  /* ── PROGRAM CENTER ── */
+  .prog-center-wrap { height:calc(100vh - var(--nav-h)); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 24px; gap:16px; }
+  .prog-center-label { font-size:15px; font-weight:600; color:rgba(168,230,61,0.5); text-align:center; margin-bottom:4px; }
+  .prog-buttons-center { display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; }
+  .prog-btn-center { background:rgba(168,230,61,0.08); border:1px solid rgba(168,230,61,0.25); border-radius:var(--radius-md); padding:22px 10px; text-align:center; cursor:pointer; font-size:14px; font-weight:600; color:rgba(168,230,61,0.5); transition:background 0.15s,border-color 0.15s; }
   .prog-btn-center span { display:block; font-size:11px; font-weight:400; color:rgba(168,230,61,0.35); margin-top:5px; }
-  .prog-btn-center:active { opacity: 0.7; }
+  .prog-btn-center:active { opacity:0.7; }
+  .prog-section-top { padding-top:28px; }
 
-  /* ── RESULTS top offset ── */
-  .results-section { padding-top: 20vh; }
-
-  /* ── PROG BUTTONS ── */
-  .prog-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .prog-btn { background: var(--bg-input); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); padding: 16px 10px; text-align: center; cursor: pointer; transition: background 0.15s,border-color 0.15s; font-size: 13px; font-weight: 500; color: var(--text-main); }
-  .prog-btn span { display: block; font-size: 11px; font-weight: 400; color: var(--text-hint); margin-top: 4px; }
-  .prog-btn:active { opacity: 0.75; }
-  .prog-btn.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
-  .prog-btn.active span { color: rgba(168,230,61,0.55); }
+  /* ── PROG BUTTONS (after select) ── */
+  .prog-buttons { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .prog-btn { background:var(--bg-input); border:0.5px solid var(--border-md); border-radius:var(--radius-md); padding:16px 10px; text-align:center; cursor:pointer; transition:background 0.15s,border-color 0.15s; font-size:13px; font-weight:500; color:var(--text-main); }
+  .prog-btn span { display:block; font-size:11px; font-weight:400; color:var(--text-hint); margin-top:4px; }
+  .prog-btn:active { opacity:0.75; }
+  .prog-btn.active { background:var(--accent-dim); border-color:var(--accent); color:var(--accent); }
+  .prog-btn.active span { color:rgba(168,230,61,0.55); }
 
   /* ── DAYS GRID ── */
-  .days-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-  .day-col { background: var(--bg-card2); border-radius: var(--radius-md); border: 0.5px solid var(--border); padding: 11px 10px; }
-  .day-col h3 { font-size: 11px; font-weight: 600; color: var(--accent); margin-bottom: 9px; padding-bottom: 7px; border-bottom: 0.5px solid var(--border); text-transform: uppercase; letter-spacing: 0.07em; }
-  .day-col ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-  .day-col li { font-size: 11.5px; color: var(--text-main); line-height: 1.3; padding-left: 10px; position: relative; }
+  .days-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+  .day-col { background:var(--bg-card2); border-radius:var(--radius-md); border:0.5px solid var(--border); padding:11px 10px; }
+  .day-col h3 { font-size:11px; font-weight:600; color:var(--accent); margin-bottom:9px; padding-bottom:7px; border-bottom:0.5px solid var(--border); text-transform:uppercase; letter-spacing:0.07em; }
+  .day-col ul { list-style:none; display:flex; flex-direction:column; gap:6px; }
+  .day-col li { font-size:11.5px; color:var(--text-main); line-height:1.3; padding-left:10px; position:relative; }
   .day-col li::before { content:''; position:absolute; left:0; top:5px; width:4px; height:4px; border-radius:50%; background:var(--accent); opacity:0.55; }
   .day-col .ex-sets { display:block; font-size:10px; color:var(--text-hint); margin-top:1px; }
 
   /* ── COMING SOON ── */
-  .coming-soon { background: var(--bg-card); border-radius: var(--radius-lg); border: 0.5px solid var(--border); padding: 48px 20px; text-align: center; }
-  .coming-soon p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .coming-soon { background:var(--bg-card); border-radius:var(--radius-lg); border:0.5px solid var(--border); padding:48px 20px; text-align:center; }
+  .coming-soon p { font-size:14px; color:var(--text-muted); line-height:1.6; }
 
   /* ── CHAT ── */
-  .chat-outer { padding: 12px 14px; height: calc(100vh - var(--nav-h)); display: flex; flex-direction: column; }
+  .chat-outer { padding:12px 14px; height:calc(100vh - var(--nav-h)); display:flex; flex-direction:column; }
   .chat-panel { flex:1; display:flex; flex-direction:column; background:var(--bg-card); border-radius:var(--radius-lg); border:0.5px solid var(--border); overflow:hidden; }
-  .chat-panel-header { padding:14px 18px 12px; font-size:15px; font-weight:600; color:var(--text-main); border-bottom:0.5px solid var(--border); flex-shrink:0; }
+  .chat-panel-header { padding:14px 18px 12px; font-size:15px; font-weight:600; color:var(--text-main); border-bottom:0.5px solid var(--border); flex-shrink:0; display:flex; align-items:center; justify-content:space-between; }
+  .sync-status { font-size:11px; font-weight:400; display:flex; align-items:center; gap:5px; }
+  .sync-dot { width:6px; height:6px; border-radius:50%; background:var(--text-hint); }
+  .sync-dot.ok { background:var(--accent); }
+  .sync-dot.err { background:var(--red); }
   .chat-inner { flex:1; display:flex; flex-direction:column; padding:12px 14px; overflow:hidden; }
   .chat-date-badge { text-align:center; font-size:11px; color:var(--text-hint); margin-bottom:10px; letter-spacing:0.04em; flex-shrink:0; }
   .chat-messages { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:8px; padding-bottom:4px; }
@@ -195,6 +126,7 @@
   .send-btn:active { opacity:0.8; }
 
   /* ── RESULTS ── */
+  .results-section { padding-top:20vh; }
   .results-days-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .result-day-label { font-size:11px; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:8px; }
   .result-entry { background:var(--bg-card2); border-radius:var(--radius-sm); border:0.5px solid var(--border); padding:10px 11px; margin-bottom:7px; }
@@ -202,15 +134,21 @@
   .result-entry .ex-name { font-size:12px; font-weight:500; color:var(--text-main); margin-bottom:3px; }
   .result-entry .ex-detail { font-size:11px; color:var(--text-muted); }
 
-  /* ── NAV (+10% высота) ── */
-  nav {
-    height: var(--nav-h);
-    background: var(--bg-card);
-    border-top: 0.5px solid var(--border-md);
-    display: grid; grid-template-columns: 1fr 1fr 1fr;
-    flex-shrink: 0;
-    padding-bottom: env(safe-area-inset-bottom,0px);
-  }
+  /* ── CLEAR BUTTON ── */
+  .clear-btn { width:100%; background:var(--red-dim); border:0.5px solid rgba(255,82,82,0.3); border-radius:var(--radius-md); padding:13px; font-size:13px; font-weight:600; color:var(--red); cursor:pointer; transition:background 0.15s; margin-top:4px; }
+  .clear-btn:active { background:rgba(255,82,82,0.2); }
+
+  /* ── CONFIRM MODAL ── */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:500; display:flex; align-items:flex-end; justify-content:center; }
+  .modal-sheet { background:var(--bg-card); border-radius:20px 20px 0 0; padding:24px 20px 32px; width:100%; max-width:480px; }
+  .modal-title { font-size:16px; font-weight:600; color:var(--text-main); margin-bottom:8px; }
+  .modal-text { font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:20px; }
+  .modal-buttons { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .modal-cancel { background:var(--bg-input); border:0.5px solid var(--border-md); border-radius:var(--radius-md); padding:13px; font-size:14px; font-weight:500; color:var(--text-main); cursor:pointer; }
+  .modal-confirm { background:var(--red); border:none; border-radius:var(--radius-md); padding:13px; font-size:14px; font-weight:600; color:#fff; cursor:pointer; }
+
+  /* ── NAV ── */
+  nav { height:var(--nav-h); background:var(--bg-card); border-top:0.5px solid var(--border-md); display:grid; grid-template-columns:1fr 1fr 1fr; flex-shrink:0; padding-bottom:env(safe-area-inset-bottom,0px); }
   nav button { background:none; border:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; font-size:10px; font-weight:500; color:var(--text-hint); transition:color 0.15s; line-height:1.2; padding:0 4px; }
   nav button svg { width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
   nav button.active { color:var(--accent); }
@@ -239,9 +177,7 @@
 
 <!-- APP -->
 <div id="app" style="display:none;">
-  <div id="app-screen">
-    <div id="screen-inner"></div>
-  </div>
+  <div id="app-screen"><div id="screen-inner"></div></div>
   <nav>
     <button id="nav-program" onclick="showTab('program')">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
@@ -259,6 +195,10 @@
 </div>
 
 <script>
+// ════ КОНФИГ — ВСТАВЬ СВОЙ URL ПОСЛЕ ДЕПЛОЯ APPS SCRIPT ════
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxJ5mnjK9H1Tr-MeI1HpUaEcy3tJUuvasNAVe9RrQUm4L7hdlbud2mVrU2SRJMRYr0_Fg/exec';
+// ════════════════════════════════════════════════════════════
+
 const LOGO_SVG_INNER = `<svg width="68" height="68" viewBox="0 0 120 120" fill="none">
   <rect x="22" y="30" width="54" height="10" rx="4" fill="#A8E63D"/>
   <rect x="22" y="30" width="10" height="58" rx="4" fill="#A8E63D"/>
@@ -278,45 +218,91 @@ const WATERMARK = `<div class="watermark"><svg viewBox="0 0 120 120" fill="none"
 </svg></div>`;
 
 const PROGRAM_FULLBODY = {
-  day1: [
-    {name:'Приседания со штангой',sets:'2×10'},
-    {name:'Жим штанги лёжа',sets:'2×10'},
-    {name:'Румынская тяга',sets:'2×10'},
-    {name:'Тяга верт. блока',sets:'3×12'},
-    {name:'Жим гантелей на плечи',sets:'2×10'},
-    {name:'Разгибание ног',sets:'2×12'},
-    {name:'Сведения рук (бабочка)',sets:'2×12'},
-    {name:'Сгибание на бицепс',sets:'2×10'},
-    {name:'Французский жим',sets:'2×10'},
-    {name:'Пресс',sets:'—'},
+  day1:[
+    {name:'Приседания со штангой',sets:'2×10'},{name:'Жим штанги лёжа',sets:'2×10'},
+    {name:'Румынская тяга',sets:'2×10'},{name:'Тяга верт. блока',sets:'3×12'},
+    {name:'Жим гантелей на плечи',sets:'2×10'},{name:'Разгибание ног',sets:'2×12'},
+    {name:'Сведения рук (бабочка)',sets:'2×12'},{name:'Сгибание на бицепс',sets:'2×10'},
+    {name:'Французский жим',sets:'2×10'},{name:'Пресс',sets:'—'},
   ],
-  day2: [
-    {name:'Болгарские приседания',sets:'2×10'},
-    {name:'Жим ногами / Гакк',sets:'2×10'},
-    {name:'Жим гантелей наклон',sets:'3×10'},
-    {name:'Тяга в наклоне',sets:'2×10'},
-    {name:'Тяга гориз. блока',sets:'3×10'},
-    {name:'Разводка (средн. дельта)',sets:'2×10'},
-    {name:'Разведения задн. дельта',sets:'2×10'},
-    {name:'Обратные сгибания',sets:'—'},
-    {name:'Разгибания трицепс',sets:'—'},
-    {name:'Подъёмы на икры',sets:'—'},
-    {name:'Пресс',sets:'—'},
+  day2:[
+    {name:'Болгарские приседания',sets:'2×10'},{name:'Жим ногами / Гакк',sets:'2×10'},
+    {name:'Жим гантелей наклон',sets:'3×10'},{name:'Тяга в наклоне',sets:'2×10'},
+    {name:'Тяга гориз. блока',sets:'3×10'},{name:'Разводка (средн. дельта)',sets:'2×10'},
+    {name:'Разведения задн. дельта',sets:'2×10'},{name:'Обратные сгибания',sets:'—'},
+    {name:'Разгибания трицепс',sets:'—'},{name:'Подъёмы на икры',sets:'—'},{name:'Пресс',sets:'—'},
   ]
 };
 
+// ── TG USER ──
+let tgUser = { id: 'local', name: 'Пользователь' };
+try {
+  if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe?.user) {
+    const u = window.Telegram.WebApp.initDataUnsafe.user;
+    tgUser = { id: String(u.id), name: u.first_name || 'Пользователь' };
+  }
+} catch(e) {}
+
+// ── STATE ──
 let currentTab='home', selectedProgram=null;
 let chatState='ask_exercise', currentExercise='', pendingWeight='';
 let chatLog=[];
+let syncOk = null; // null=unknown, true=ok, false=err
 
-function getTodayStr(){return new Date().toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'});}
-function saveEntry(ex,w,s,r){const log=JSON.parse(localStorage.getItem('workout_log')||'[]');log.push({date:getTodayStr(),exercise:ex,weight:w,sets:s,reps:r,ts:Date.now()});localStorage.setItem('workout_log',JSON.stringify(log));}
-function getLog(){return JSON.parse(localStorage.getItem('workout_log')||'[]');}
-function getLastTwoDays(){const log=getLog();if(!log.length)return[];const dates=[...new Set(log.map(e=>e.date))].sort((a,b)=>b.split('.').reverse().join('-').localeCompare(a.split('.').reverse().join('-')));return dates.slice(0,2);}
+const si = document.getElementById('screen-inner');
+const as = document.getElementById('app-screen');
 
-const si=document.getElementById('screen-inner');
-const as=document.getElementById('app-screen');
+// ── LOCAL STORAGE ──
+function getTodayStr(){ return new Date().toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'}); }
 
+function saveLocal(ex,w,s,r){
+  const log=JSON.parse(localStorage.getItem('workout_log')||'[]');
+  log.push({date:getTodayStr(),exercise:ex,weight:w,sets:s,reps:r,ts:Date.now(),userId:tgUser.id});
+  localStorage.setItem('workout_log',JSON.stringify(log));
+}
+function getLog(){ return JSON.parse(localStorage.getItem('workout_log')||'[]').filter(e=>e.userId===tgUser.id||!e.userId); }
+function clearLocal(){
+  const log=JSON.parse(localStorage.getItem('workout_log')||'[]').filter(e=>e.userId && e.userId!==tgUser.id);
+  localStorage.setItem('workout_log',JSON.stringify(log));
+}
+function getLastTwoDays(){
+  const log=getLog(); if(!log.length)return[];
+  const dates=[...new Set(log.map(e=>e.date))].sort((a,b)=>b.split('.').reverse().join('-').localeCompare(a.split('.').reverse().join('-')));
+  return dates.slice(0,2);
+}
+
+// ── GOOGLE SHEETS ──
+async function saveToSheets(ex,w,s,r){
+  if(SHEETS_URL==='ВСТАВЬ_URL_APPS_SCRIPT_СЮДА') return;
+  try {
+    await fetch(SHEETS_URL,{method:'POST',body:JSON.stringify({action:'save',userId:tgUser.id,userName:tgUser.name,date:getTodayStr(),exercise:ex,weight:w,sets:s,reps:r}),headers:{'Content-Type':'text/plain'}});
+    syncOk=true;
+  } catch(e){ syncOk=false; }
+  updateSyncDot();
+}
+
+async function clearSheets(){
+  if(SHEETS_URL==='ВСТАВЬ_URL_APPS_SCRIPT_СЮДА') return;
+  try {
+    await fetch(SHEETS_URL,{method:'POST',body:JSON.stringify({action:'clear',userId:tgUser.id}),headers:{'Content-Type':'text/plain'}});
+  } catch(e){}
+}
+
+function updateSyncDot(){
+  const dot=document.getElementById('sync-dot');
+  if(!dot)return;
+  dot.className='sync-dot'+(syncOk===true?' ok':syncOk===false?' err':'');
+  const lbl=document.getElementById('sync-label');
+  if(lbl) lbl.textContent=syncOk===true?'Синхронизировано':syncOk===false?'Офлайн':'Ожидание';
+}
+
+// ── SAVE ENTRY (local + sheets) ──
+async function saveEntry(ex,w,s,r){
+  saveLocal(ex,w,s,r);
+  saveToSheets(ex,w,s,r); // async, не ждём
+}
+
+// ── TABS ──
 function showTab(t){
   currentTab=t;
   ['program','tracker','results'].forEach(x=>document.getElementById('nav-'+x).classList.toggle('active',x===t));
@@ -329,45 +315,39 @@ function render(){
   else if(currentTab==='results') renderResults();
 }
 
+// ── HOME ──
 function renderHome(){
   as.style.overflow='hidden';
-  si.innerHTML=`
-    <div class="home-wrap">
-      <div class="home-logo-zone">
-        <div class="home-logo-box">${LOGO_SVG_INNER}</div>
-        <div class="home-brand">Fit<span>BRO</span></div>
-        <div class="home-brand-sub">your gym log</div>
+  si.innerHTML=`<div class="home-wrap">
+    <div class="home-logo-zone">
+      <div class="home-logo-box">${LOGO_SVG_INNER}</div>
+      <div class="home-brand">Fit<span>BRO</span></div>
+      <div class="home-brand-sub">your gym log</div>
+    </div>
+    <div class="home-bottom">
+      <div class="home-welcome-text">
+        <h2>Добро пожаловать!</h2>
+        <p>Выберите раздел ниже,<br>чтобы начать тренировку</p>
       </div>
-      <div class="home-bottom">
-        <div class="home-welcome-text">
-          <h2>Добро пожаловать!</h2>
-          <p>Выберите раздел ниже,<br>чтобы начать тренировку</p>
-        </div>
-        <div class="bounce-arrow">
-          <svg viewBox="0 0 18 18"><polyline points="4 7 9 12 14 7"/></svg>
-        </div>
-      </div>
-    </div>`;
+      <div class="bounce-arrow"><svg viewBox="0 0 18 18"><polyline points="4 7 9 12 14 7"/></svg></div>
+    </div>
+  </div>`;
 }
 
+// ── PROGRAM ──
 function renderProgram(){
   const makeList=arr=>arr.map(e=>`<li>${escHtml(e.name)}<span class="ex-sets">${e.sets}</span></li>`).join('');
-
   if(!selectedProgram){
-    // Центрированный выбор без прокрутки
     as.style.overflow='hidden';
-    si.innerHTML=`${WATERMARK}
-      <div class="prog-center-wrap">
-        <div class="prog-center-label">Выберите программу тренировок</div>
-        <div class="prog-buttons-center">
-          <div class="prog-btn-center" onclick="selectProgram('fullbody')">Фулл-боди<span>2 дня в неделю</span></div>
-          <div class="prog-btn-center" onclick="selectProgram('split')">Сплит<span>3 дня в неделю</span></div>
-        </div>
-      </div>`;
+    si.innerHTML=`${WATERMARK}<div class="prog-center-wrap">
+      <div class="prog-center-label">Выберите программу тренировок</div>
+      <div class="prog-buttons-center">
+        <div class="prog-btn-center" onclick="selectProgram('fullbody')">Фулл-боди<span>2 дня в неделю</span></div>
+        <div class="prog-btn-center" onclick="selectProgram('split')">Сплит<span>3 дня в неделю</span></div>
+      </div>
+    </div>`;
     return;
   }
-
-  // После выбора — панель наверху, контент ниже
   as.style.overflow='auto';
   let html=`${WATERMARK}<div class="screen-content prog-section-top">
     <div class="panel">
@@ -386,12 +366,20 @@ function renderProgram(){
 }
 function selectProgram(p){selectedProgram=p;renderProgram();}
 
+// ── TRACKER ──
 function renderTracker(){
   as.style.overflow='hidden';
+  const sheetConnected=SHEETS_URL!=='ВСТАВЬ_URL_APPS_SCRIPT_СЮДА';
   const msgs=chatLog.map(m=>`<div class="msg msg-${m.from}">${escHtml(m.text)}</div>`).join('');
   si.innerHTML=`<div class="chat-outer">
     <div class="chat-panel">
-      <div class="chat-panel-header">Трекер тренировки</div>
+      <div class="chat-panel-header">
+        Трекер тренировки
+        <div class="sync-status">
+          <div class="sync-dot${syncOk===true?' ok':syncOk===false?' err':''}" id="sync-dot"></div>
+          <span id="sync-label" style="color:var(--text-hint)">${sheetConnected?(syncOk===true?'Синхронизировано':syncOk===false?'Офлайн':'Google Sheets'):'Только локально'}</span>
+        </div>
+      </div>
       <div class="chat-inner">
         <div class="chat-date-badge">${getTodayStr()}</div>
         <div class="chat-messages" id="chat-messages">${msgs}</div>
@@ -403,7 +391,7 @@ function renderTracker(){
     </div>
   </div>`;
   scrollChat();
-  if(chatLog.length===0) addBotMessage('Привет! 💪\nВведите название упражнения, которое вы выполняете сегодня.');
+  if(chatLog.length===0) addBotMessage(`Привет, ${tgUser.name}! 💪\nВведите название упражнения, которое вы выполняете сегодня.`);
 }
 
 function scrollChat(){const el=document.getElementById('chat-messages');if(el)el.scrollTop=el.scrollHeight;}
@@ -414,7 +402,7 @@ function addBotMessage(text){
 }
 function sendChat(){
   const inp=document.getElementById('chat-input');
-  const val=inp.value.trim(); if(!val)return;
+  const val=inp.value.trim();if(!val)return;
   inp.value='';
   chatLog.push({from:'user',text:val});
   const el=document.getElementById('chat-messages');
@@ -427,36 +415,72 @@ function handleBot(input){
   else if(chatState==='ask_sets'){
     let sets='?',reps='?';
     const m=input.match(/(\d+)[×xXхХ](\d+)/);if(m){sets=m[1];reps=m[2];}
-    saveEntry(currentExercise,pendingWeight,sets,reps);
+    saveEntry(currentExercise,pendingWeight,sets,reps).then(()=>updateSyncDot());
     addBotMessage(`✓ Записано!\n${getTodayStr()} — ${currentExercise}: ${pendingWeight}кг × ${reps} × ${sets} подх.\n\nВведите следующее упражнение или напишите «готово».`);
     chatState='ask_exercise';currentExercise='';pendingWeight='';
   }
 }
 
+// ── RESULTS ──
 function renderResults(){
   as.style.overflow='auto';
   const days=getLastTwoDays();
-  if(!days.length){si.innerHTML=`${WATERMARK}<div class="screen-content results-section"><div class="coming-soon"><p>Записей пока нет.<br>Начните тренировку в разделе «Трекер».</p></div></div>`;return;}
+  if(!days.length){
+    si.innerHTML=`${WATERMARK}<div class="screen-content results-section">
+      <div class="coming-soon"><p>Записей пока нет.<br>Начните тренировку в разделе «Трекер».</p></div>
+    </div>`;
+    return;
+  }
   const log=getLog();
   const cols=days.map(date=>{
     const entries=log.filter(e=>e.date===date);
     const rows=entries.map(e=>`<div class="result-entry"><div class="ex-name">${escHtml(e.exercise)}</div><div class="ex-detail">${escHtml(e.weight)} кг × ${escHtml(e.reps)} × ${escHtml(e.sets)} подх.</div></div>`).join('');
     return `<div><div class="result-day-label">${date}</div>${rows}</div>`;
   }).join('');
-  si.innerHTML=`${WATERMARK}<div class="screen-content results-section"><div class="panel"><div class="panel-header">Последние тренировки</div><div class="panel-body"><div class="results-days-grid">${cols}</div></div></div></div>`;
+  si.innerHTML=`${WATERMARK}<div class="screen-content results-section">
+    <div class="panel">
+      <div class="panel-header">Последние тренировки</div>
+      <div class="panel-body">
+        <div class="results-days-grid">${cols}</div>
+      </div>
+    </div>
+    <button class="clear-btn" onclick="confirmClear()">🗑 Очистить историю тренировок</button>
+  </div>`;
 }
 
-function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+// ── CLEAR CONFIRM ──
+function confirmClear(){
+  const overlay=document.createElement('div');
+  overlay.className='modal-overlay';
+  overlay.id='clear-modal';
+  overlay.innerHTML=`<div class="modal-sheet">
+    <div class="modal-title">Очистить историю?</div>
+    <div class="modal-text">Все записи тренировок будут удалены из приложения. Данные в Google Таблице останутся — вы сможете отслеживать прогресс там. Это действие нельзя отменить.</div>
+    <div class="modal-buttons">
+      <button class="modal-cancel" onclick="closeModal()">Отмена</button>
+      <button class="modal-confirm" onclick="doClear()">Удалить</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+}
+function closeModal(){ const m=document.getElementById('clear-modal');if(m)m.remove(); }
+function doClear(){
+  closeModal();
+  clearLocal();
+  chatLog=[];
+  renderResults();
+}
 
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── INIT ──
 window.addEventListener('DOMContentLoaded',()=>{
-  if(window.Telegram&&window.Telegram.WebApp){window.Telegram.WebApp.ready();window.Telegram.WebApp.expand();}
+  if(window.Telegram&&window.Telegram.WebApp){ window.Telegram.WebApp.ready(); window.Telegram.WebApp.expand(); }
   setTimeout(()=>{
-    const splash=document.getElementById('splash');
-    const app=document.getElementById('app');
-    splash.classList.add('hide');
-    app.style.display='flex';
+    document.getElementById('splash').classList.add('hide');
+    document.getElementById('app').style.display='flex';
     renderHome();
-    setTimeout(()=>{splash.style.display='none';},500);
+    setTimeout(()=>{ document.getElementById('splash').style.display='none'; },500);
   },1600);
 });
 </script>
